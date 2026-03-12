@@ -58,9 +58,9 @@ function updateUI(hex, r, g, b, h, s, l, source) {
     subRgbLabel.textContent = `RGB(${r}, ${g}, ${b})`;
     hslCode.textContent = `hsl(${h}, ${s}%, ${l}%)`;
     
-    // Update the small degree/percentage labels always
-    hLabel.textContent = `${h}°`; 
-    sLabel.textContent = `${s}%`; 
+    // Fix: Always update the small labels above the sliders
+    hLabel.textContent = `${h}°`;
+    sLabel.textContent = `${s}%`;
     lLabel.textContent = `${l}%`;
 
     const lum = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
