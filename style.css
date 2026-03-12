@@ -2,22 +2,34 @@ body {
     background-color: #f8fafc;
     font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
 }
+
 .color-preview {
     transition: background-color 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
+
 .history-dot {
     cursor: pointer;
     transition: all 0.2s;
 }
+
 .history-dot:hover {
     transform: translateY(-2px);
     filter: brightness(1.1);
 }
+
 input[type=range]::-webkit-slider-runnable-track {
     background: #f1f5f9;
     height: 8px;
     border-radius: 4px;
 }
+
 input[type=range]::-webkit-slider-thumb {
     margin-top: -4px;
 }
+
+@media (min-width: 640px) {
+    .grid-cols-1.sm-grid-cols-3 {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+}
+
