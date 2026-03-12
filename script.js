@@ -15,6 +15,7 @@ const preview = document.getElementById('colorPreview');
 const mainHexLabel = document.getElementById('mainHexLabel');
 const subRgbLabel = document.getElementById('subRgbLabel');
 const hslCode = document.getElementById('hslCode');
+const cmykCode = document.getElementById('cmykCode');
 const lumValue = document.getElementById('lumValue');
 const historyGrid = document.getElementById('historyGrid');
 
@@ -38,6 +39,18 @@ function rgbToHsl(r, g, b) {
     return { h: Math.round(h * 360), s: Math.round(s * 100), l: Math.round(l * 100) };
 }
 
+function rgbToCmyk(r, g, b) {
+    let r_p = r / 255;
+    let g_p = g / 255;
+    let b_p = b / 255;
+    let k = 1 - Math.max(r_p, g_p, b_p);
+    if (k === 1) return "0, 0, 0, 100";
+    let c = Math.round(((1 - r_p - k) / (1 - k)) * 100);
+    let m = Math.round(((1 - g_p - k) / (1 - k)) * 100);
+    let y = Math.round(((1 - b_p - k) / (1 - k)) * 100);
+    return `${c}, ${m}, ${y}, ${Math.round(k * 100)}`;
+}
+
 function hslToRgb(h, s, l) {
     s /= 100; l /= 100;
     const k = n => (n + h / 30) % 12;
@@ -57,8 +70,9 @@ function updateUI(hex, r, g, b, h, s, l, source) {
     mainHexLabel.textContent = color;
     subRgbLabel.textContent = `RGB(${r}, ${g}, ${b})`;
     hslCode.textContent = `hsl(${h}, ${s}%, ${l}%)`;
+    cmykCode.textContent = rgbToCmyk(r, g, b);
     
-    // Fix: Always update the small labels above the sliders
+    // Always update labels above sliders
     hLabel.textContent = `${h}°`;
     sLabel.textContent = `${s}%`;
     lLabel.textContent = `${l}%`;
@@ -76,9 +90,7 @@ function updateUI(hex, r, g, b, h, s, l, source) {
         rInput.value = r; gInput.value = g; bInput.value = b;
     }
     if (source !== 'hsl') {
-        hSlider.value = h; 
-        sSlider.value = s; 
-        lSlider.value = l;
+        hSlider.value = h; sSlider.value = s; lSlider.value = l;
     }
 
     if (source !== 'init') saveHistory(hex);
@@ -161,5 +173,5 @@ document.getElementById('clearHistory').onclick = () => {
     renderHistory();
 };
 
-// Initialize with White
 window.onload = () => updateUI("FFFFFF", 255, 255, 255, 0, 0, 100, 'init');
+
